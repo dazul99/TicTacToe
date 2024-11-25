@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class Tile : MonoBehaviour
 {
@@ -14,8 +16,8 @@ public class Tile : MonoBehaviour
     private void Awake()
     {
         image = GetComponent<Image>();
-        x = (int)transform.position.x/150 + 1;
-        y = (int)transform.position.y / 150 + 1;
+        x = (int)((gameObject.transform.position.x - 660) / 300);
+        y = (int)((gameObject.transform.position.y - 240) / 300);
         Color aux = Color.white;
         aux.a = 0;
         image.color = aux;
@@ -25,15 +27,16 @@ public class Tile : MonoBehaviour
     {
         gameManager = FindObjectOfType<GameManager>();
     }
-
-    private void OnMouseDown()
+    
+    public void HasBeenPressed()
     {
+        if (gameManager.IsGameOver()) return;
+        
         if (!isVisible)
         {
             isVisible = true;
             image.color = Color.white;
-            image.sprite = gameManager.GetSprite();
-            gameManager.BoardChange(x,y);
+            gameManager.BoardChange(x, y);
         }
     }
 
